@@ -1,11 +1,18 @@
-
+import {  Routes, Route } from "react-router-dom";
+import Navbar from "./components/Navbar";
 const App = () => {
   return (
-    <div>
-      <h1>API Testing Project</h1>
-      
-    </div>
-  )
-}
 
-export default App
+    <div>
+      <Navbar />
+      <Routes>
+        <Route path="/" element={<h1>Home</h1>} />
+        <Route path="/about" element={<h1>About</h1>} />
+        <Route path="/contact" element={<h1>Contact</h1>} />
+      </Routes>
+    </div>
+
+  );
+};
+
+export default App;
