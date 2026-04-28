@@ -2,8 +2,7 @@
 import jwt from 'jsonwebtoken';
 import bcrypt from "bcryptjs";
 import User from "../models/user.models.js";
-import dotenv from 'dotenv';
-dotenv.config();
+import "dotenv/config";
 
 export const register = async (req, res) => {
   const { username, email, password } = req.body;
@@ -107,6 +106,73 @@ export const login = async (req, res) => {
         id: user._id,
         name: user.name,
         email: user.email
+      }
+    });
+
+  } catch (err) {
+    return res.status(500).json({
+      success: false,
+      msg: "Server error",
+      error: err.message
+    });
+  }
+};
+
+
+export const logout=(req,res)=>{
+    res.clearCookie("token", {  
+        httpOnly: true,
+        secure: process.env.NODE_ENV === "production",
+        sameSite: "strict"
+    });
+    return res.status(200).json({
+        success: true,
+        msg: "Logout successful"
+    });
+        
+}
+
+
+export const updateUserProfile = async (req, res) => {
+  const { username, email, password, profile } = req.body;
+
+  try {
+    const existingUser = await User.findById(req.user.id);
+
+    if (!existingUser) {
+      return res.status(404).json({
+        success: false,
+        msg: "User not found"
+      });
+    }
+
+    let updatedData = {
+      username: username || existingUser.username,
+      email: email ? email.toLowerCase() : existingUser.email
+    };
+
+    if (password) {
+      updatedData.password = await bcrypt.hash(password, 10);
+    }
+
+    if (profile !== undefined) {
+      updatedData.profile = profile;
+    }
+
+    const updatedUser = await User.findByIdAndUpdate(
+      req.user.id,
+      updatedData,
+      { new: true }
+    );
+
+    return res.status(200).json({
+      success: true,
+      msg: "Profile updated successfully",
+      user: {
+        id: updatedUser._id,
+        username: updatedUser.username,
+        email: updatedUser.email,
+        profile: updatedUser.profile
       }
     });
 
