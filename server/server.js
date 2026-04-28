@@ -8,6 +8,9 @@ const app = express();
 import './config/db.js';
 import authRoutes from './routes/user.routes.js';
 dotenv.config({ quiet: true });
+
+
+
 app.use(cors({
   origin: process.env.CLIENT_URL,
   credentials: true
