@@ -1,5 +1,4 @@
-
-
+import "dotenv/config";
 export const authMiddleware = (req, res, next) => {
   const token = req.cookies.token;  
     if (!token) {
@@ -9,7 +8,7 @@ export const authMiddleware = (req, res, next) => {
     }               
     try {   
         const decoded = jwt.verify(token, process.env.JWT_SECRET);
-        req.user = decoded.id;
+        req.user = decoded;
         next();
     } catch (err) {
 

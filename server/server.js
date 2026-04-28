@@ -1,13 +1,12 @@
 import express from 'express';
 import cors from 'cors';
-import dotenv from 'dotenv';
-dotenv.config();
+import "dotenv/config";
 
 const app = express();
 
 import './config/db.js';
 import authRoutes from './routes/user.routes.js';
-dotenv.config({ quiet: true });
+
 
 
 
