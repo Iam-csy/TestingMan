@@ -90,7 +90,6 @@ export const login = async (req, res) => {
       { expiresIn: "7d" }
     );
 
-    // Send cookie
     res.cookie("token", token, {
       httpOnly: true,
       secure: process.env.NODE_ENV === "production", // true in production
@@ -167,7 +166,7 @@ export const updateUserProfile = async (req, res) => {
 
     return res.status(200).json({
       success: true,
-      msg: "Profile updated successfully",
+      msg: "Profile updated successfully yes",
       user: {
         id: updatedUser._id,
         username: updatedUser.username,
