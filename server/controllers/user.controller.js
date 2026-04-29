@@ -4,6 +4,9 @@ import bcrypt from "bcryptjs";
 import User from "../models/user.models.js";
 import "dotenv/config";
 
+import cloudinary from "../config/claudinary.js";
+
+
 export const register = async (req, res) => {
   const { username, email, password } = req.body;
 
@@ -96,6 +99,7 @@ export const login = async (req, res) => {
       sameSite: "strict",
       maxAge: 7 * 24 * 60 * 60 * 1000
     });
+   
 
     // Success response
     return res.status(200).json({
@@ -117,69 +121,58 @@ export const login = async (req, res) => {
   }
 };
 
+export const logout = (req, res) => {
+  res.clearCookie("token", {
+    httpOnly: true,
+    secure: process.env.NODE_ENV === "production",
+    sameSite: "strict"
+  });
 
-export const logout=(req,res)=>{
-    res.clearCookie("token", {  
-        httpOnly: true,
-        secure: process.env.NODE_ENV === "production",
-        sameSite: "strict"
-    });
-    return res.status(200).json({
-        success: true,
-        msg: "Logout successful"
-    });
-        
-}
-
-
-export const updateUserProfile = async (req, res) => {
-  const { username, email, password, profile } = req.body;
-
+  return res.status(200).json({
+    success: true,
+    msg: "Logged out successfully"
+  });
+};
+export const updateProfile = async (req, res) => {
   try {
-    const existingUser = await User.findById(req.user.id);
+    const { profilePic } = req.body;
 
-    if (!existingUser) {
-      return res.status(404).json({
-        success: false,
-        msg: "User not found"
+    if (!profilePic) {
+      return res.status(400).json({
+        message: "Profile pic is required"
       });
     }
 
-    let updatedData = {
-      username: username || existingUser.username,
-      email: email ? email.toLowerCase() : existingUser.email
-    };
+    const userId = req.user.id; // from JWT payload
 
-    if (password) {
-      updatedData.password = await bcrypt.hash(password, 10);
-    }
+    // Upload image to Cloudinary
+    const uploadResponse =
+      await cloudinary.uploader.upload(profilePic);
 
-    if (profile !== undefined) {
-      updatedData.profile = profile;
-    }
-
-    const updatedUser = await User.findByIdAndUpdate(
-      req.user.id,
-      updatedData,
-      { new: true }
-    );
+    // Update user in DB
+    const updatedUser =
+      await User.findByIdAndUpdate(
+        userId,
+        {
+          profilePic: uploadResponse.secure_url
+        },
+        {
+          returnDocument: "after"
+        }
+      );
 
     return res.status(200).json({
       success: true,
-      msg: "Profile updated successfully yes",
-      user: {
-        id: updatedUser._id,
-        username: updatedUser.username,
-        email: updatedUser.email,
-        profile: updatedUser.profile
-      }
+      user: updatedUser
     });
 
-  } catch (err) {
+  } catch (error) {
+    console.log("FULL ERROR:", error);
+
     return res.status(500).json({
       success: false,
       msg: "Server error",
-      error: err.message
+      error: error.message
     });
   }
 };
