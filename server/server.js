@@ -14,7 +14,7 @@ import historyRoutes from './routes/history.routes.js';
 
 
 app.use(cors({
-  origin: process.env.CLIENT_URL,
+  origin: [process.env.CLIENT_URL, 'http://localhost:5173', 'http://localhost:5174'],
   credentials: true
 }));
 app.use(express.json());

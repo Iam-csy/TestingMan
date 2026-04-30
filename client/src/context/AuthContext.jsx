@@ -1,4 +1,5 @@
-import { createContext, useState, useEffect, useContext } from 'react';
+/* eslint-disable react-refresh/only-export-components */
+import { createContext, useState, useEffect, useContext, useCallback } from 'react';
 import apiClient from '../api/apiClient';
 
 const AuthContext = createContext();
@@ -7,22 +8,23 @@ export const AuthProvider = ({ children }) => {
   const [user, setUser] = useState(null);
   const [loading, setLoading] = useState(true);
 
-  const checkAuth = async () => {
+  const checkAuth = useCallback(async () => {
     try {
       const res = await apiClient.get('/auth/me');
       if (res.data.success) {
         setUser(res.data.user);
       }
-    } catch (error) {
+    } catch {
       setUser(null);
     } finally {
       setLoading(false);
     }
-  };
+  }, []);
 
   useEffect(() => {
+    // eslint-disable-next-line react-hooks/set-state-in-effect
     checkAuth();
-  }, []);
+  }, [checkAuth]);
 
   const login = async (email, password) => {
     const res = await apiClient.post('/auth/login', { email, password });

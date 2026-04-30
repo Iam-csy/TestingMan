@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import apiClient from '../api/apiClient';
 import Sidebar from '../components/Sidebar';
 import RequestPanel from '../components/RequestPanel';
@@ -16,7 +16,7 @@ const Home = () => {
   const [response, setResponse] = useState(null);
   const [loading, setLoading] = useState(false);
 
-  const fetchHistory = async () => {
+  const fetchHistory = useCallback(async () => {
     try {
       const res = await apiClient.get('/history');
       if (res.data.success) {
@@ -25,11 +25,12 @@ const Home = () => {
     } catch (error) {
       console.error("Failed to fetch history", error);
     }
-  };
+  }, []);
 
   useEffect(() => {
+    // eslint-disable-next-line react-hooks/set-state-in-effect
     fetchHistory();
-  }, []);
+  }, [fetchHistory]);
 
   const handleSendRequest = async (requestData) => {
     setLoading(true);
@@ -50,7 +51,7 @@ const Home = () => {
       if (requestData.method !== 'GET' && requestData.body) {
         try {
           payload.body = JSON.parse(requestData.body);
-        } catch (e) {
+        } catch {
           payload.body = requestData.body; // fallback to string
         }
       }
