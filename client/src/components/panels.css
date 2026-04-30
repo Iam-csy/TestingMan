@@ -1,0 +1,239 @@
+.panel {
+  background-color: #151525;
+  border: 1px solid rgba(255, 255, 255, 0.05);
+  border-radius: 8px;
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 1rem;
+  overflow: hidden;
+}
+
+.request-panel {
+  flex: 0 0 auto;
+}
+
+.response-panel {
+  flex: 1;
+  min-height: 300px;
+}
+
+.request-bar {
+  display: flex;
+  padding: 1rem;
+  gap: 0.5rem;
+  background-color: #1a1a2e;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+.method-select {
+  background-color: #0f0f1a;
+  color: #fff;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  padding: 0.5rem 1rem;
+  border-radius: 4px;
+  font-weight: 600;
+  cursor: pointer;
+  outline: none;
+}
+
+.method-select:focus {
+  border-color: #6366f1;
+}
+
+.url-input {
+  flex: 1;
+  background-color: #0f0f1a;
+  color: #fff;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  padding: 0.5rem 1rem;
+  border-radius: 4px;
+  font-family: monospace;
+  font-size: 0.95rem;
+  outline: none;
+}
+
+.url-input:focus {
+  border-color: #6366f1;
+}
+
+.send-btn {
+  background: linear-gradient(135deg, #6366f1 0%, #4f46e5 100%);
+  color: white;
+  border: none;
+  padding: 0 1.5rem;
+  border-radius: 4px;
+  font-weight: 600;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  transition: opacity 0.2s;
+}
+
+.send-btn:hover:not(:disabled) {
+  opacity: 0.9;
+}
+
+.send-btn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.tabs {
+  display: flex;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+  background-color: #151525;
+}
+
+.tab {
+  background: none;
+  border: none;
+  color: #94a3b8;
+  padding: 0.75rem 1.5rem;
+  cursor: pointer;
+  font-weight: 500;
+  border-bottom: 2px solid transparent;
+}
+
+.tab:hover {
+  color: #e2e8f0;
+}
+
+.tab.active {
+  color: #fff;
+  border-bottom-color: #6366f1;
+}
+
+.tab-content {
+  padding: 1rem;
+  flex: 1;
+  overflow-y: auto;
+}
+
+.empty-tab-state {
+  color: #64748b;
+  font-size: 0.9rem;
+  font-style: italic;
+}
+
+.key-value-editor {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.kv-row {
+  display: flex;
+  gap: 0.5rem;
+}
+
+.kv-row input {
+  flex: 1;
+  background-color: #0f0f1a;
+  color: #fff;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  padding: 0.5rem;
+  border-radius: 4px;
+  outline: none;
+}
+
+.kv-row button {
+  background: none;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  color: #f87171;
+  border-radius: 4px;
+  padding: 0 0.75rem;
+  cursor: pointer;
+}
+
+.kv-row button:hover {
+  background-color: rgba(248, 113, 113, 0.1);
+}
+
+.add-kv-btn {
+  align-self: flex-start;
+  background: none;
+  border: none;
+  color: #6366f1;
+  display: flex;
+  align-items: center;
+  gap: 0.25rem;
+  padding: 0.5rem 0;
+  cursor: pointer;
+  font-weight: 500;
+}
+
+.add-kv-btn:hover {
+  color: #818cf8;
+}
+
+.code-editor-wrapper {
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 4px;
+  overflow: hidden;
+}
+
+/* Response Meta */
+.response-meta {
+  display: flex;
+  padding: 0.75rem 1rem;
+  gap: 1.5rem;
+  background-color: #1a1a2e;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+  font-size: 0.85rem;
+  font-weight: 500;
+  color: #94a3b8;
+}
+
+.meta-item span {
+  margin-left: 0.25rem;
+  font-weight: 600;
+}
+
+.loading-state, .empty-state {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  color: #64748b;
+}
+
+.loader {
+  border: 3px solid rgba(255, 255, 255, 0.1);
+  border-top-color: #6366f1;
+  border-radius: 50%;
+  width: 24px;
+  height: 24px;
+  animation: spin 1s linear infinite;
+  margin-bottom: 1rem;
+}
+
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
+
+.response-headers {
+  overflow-x: auto;
+}
+
+.headers-table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.headers-table td {
+  padding: 0.5rem;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+  font-size: 0.85rem;
+}
+
+.header-key {
+  color: #cbd5e1;
+  font-weight: 600;
+  width: 30%;
+}
+
+.header-value {
+  color: #94a3b8;
+  font-family: monospace;
+}
