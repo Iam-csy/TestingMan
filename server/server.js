@@ -23,7 +23,9 @@ app.use(cookieParser());
 app.get('/', (req, res) => {
   res.send('Hello, World!');
 });
-
+app.get("/api/user/:id", (req, res) => {
+  res.json({ msg: "User data" });
+});
 app.use('/api/auth', authRoutes);
 app.use('/api/request', requestApiRoutes);
 app.use('/api/history', historyRoutes);
