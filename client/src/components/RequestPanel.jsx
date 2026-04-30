@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import { Send, Plus, Trash2 } from 'lucide-react';
 import CodeMirror from '@uiw/react-codemirror';
 import { json } from '@codemirror/lang-json';
