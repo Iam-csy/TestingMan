@@ -14,6 +14,7 @@ export const register = async (req, res) => {
     // Validate fields
     if (!username || !email || !password) {
       return res.status(400).json({
+        success: false,
         msg: "Please fill all fields"
       });
     }
@@ -25,6 +26,7 @@ export const register = async (req, res) => {
 
     if (existingUser) {
       return res.status(409).json({
+        success: false,
         msg: "Email already registered"
       });
     }
@@ -42,11 +44,13 @@ export const register = async (req, res) => {
     await newUser.save();
 
     return res.status(201).json({
+      success: true,
       msg: "User registered successfully"
     });
 
   } catch (err) {
     return res.status(500).json({
+      success: false,
       msg: "Server error",
       error: err.message
     });
@@ -107,8 +111,9 @@ export const login = async (req, res) => {
       msg: "Login successful",
       user: {
         id: user._id,
-        name: user.name,
-        email: user.email
+        username: user.username,
+        email: user.email,
+        profile: user.profile
       }
     });
 
@@ -177,3 +182,22 @@ export const updateProfile = async (req, res) => {
   }
 };
 
+export const checkAuth = async (req, res) => {
+  try {
+    const user = await User.findById(req.user.id).select("-password");
+    if (!user) {
+      return res.status(401).json({ success: false, msg: "User not found" });
+    }
+    return res.status(200).json({
+      success: true,
+      user: {
+        id: user._id,
+        username: user.username,
+        email: user.email,
+        profile: user.profile
+      }
+    });
+  } catch (error) {
+    return res.status(500).json({ success: false, msg: "Server error" });
+  }
+};
